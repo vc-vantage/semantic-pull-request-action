@@ -23,12 +23,17 @@ inputs:
   subjectPattern:
     description: "Configure additional validation for the subject based on a regex. E.g. '^(?![A-Z]).+$' ensures the subject doesn't start with an uppercase character."
     required: false
+    default: ".*(VPM|VANSUP|AADA|AAA)-[1-9][0-9]{1,5}.*"
   subjectPatternError:
     description: "If `subjectPattern` is configured, you can use this property to override the default error message that is shown when the pattern doesn't match. The variables `subject` and `title` can be used within the message."
     required: false
+    default: |
+      Missing JIRA ticket in the pull request title "{title}". 
+      Ensure that contains  "VPM-", "VANSUP"-, "AADA-", "AAA-".
   validateSingleCommit:
     description: "When using \"Squash and merge\" on a PR with only one commit, GitHub will suggest using that commit message instead of the PR title for the merge commit, and it's easy to commit this by mistake. Enable this option to also validate the commit message for one commit PRs." 
     required: false
+    default: true
   validateSingleCommitMatchesPrTitle:
     description: "Related to `validateSingleCommit` you can opt-in to validate that the PR title matches a single commit to avoid confusion."
     required: false
@@ -47,3 +52,4 @@ inputs:
   wip:
     description: "For work-in-progress PRs you can typically use draft pull requests from Github. However, private repositories on the free plan don't have this option and therefore this action allows you to opt-in to using the special '[WIP]' prefix to indicate this state. This will avoid the validation of the PR title and the pull request checks remain pending. Note that a second check will be reported if this is enabled."
     required: false
+    default: true
