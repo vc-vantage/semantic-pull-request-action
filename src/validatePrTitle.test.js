@@ -308,6 +308,14 @@ describe('description validation', () => {
     ).rejects.toThrow(customError);
   });
 
+  it('pass dependabot', async () => {
+    await validatePrTitle('chore(deps): bump foobar', {
+      subjectPattern: '^(.*(VPM|VANSUP|AADA|AAA)-[1-9][0-9]{1,5}.*|bump .*)$',
+      subjectPatternError:
+          'The subject found in the pull request title cannot start with an uppercase character.'
+    });
+  });
+
   it('interpolates variables into `subjectPatternError`', async () => {
     await expect(
       validatePrTitle('fix: Foobar', {
