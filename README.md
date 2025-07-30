@@ -28,15 +28,14 @@ on:
     types:
       - opened
       - edited
-      - synchronize
-
-permissions:
-  pull-requests: read
+      - reopened
 
 jobs:
   main:
     name: Validate PR title
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
     steps:
       - uses: amannn/action-semantic-pull-request@v5
         env:
@@ -134,6 +133,8 @@ jobs:
   main:
     name: Validate PR title
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
     steps:
       - uses: amannn/action-semantic-pull-request@v5
         env:
@@ -182,7 +183,6 @@ on:
     types:
       - opened
       - edited
-      - synchronize
 
 permissions:
   pull-requests: write
@@ -191,6 +191,8 @@ jobs:
   main:
     name: Validate PR title
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
     steps:
       - uses: amannn/action-semantic-pull-request@v5
         id: lint_pr_title
