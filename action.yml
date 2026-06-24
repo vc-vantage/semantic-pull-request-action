@@ -29,7 +29,7 @@ inputs:
     required: false
     default: |
       Missing JIRA ticket in the pull request title "{title}". 
-      Ensure that contains  "VPM-", "VANSUP"-, "AADA-", "AAA-".
+      Ensure that contains  "VPM-", "VANSUP"-, "AADA-", "AAA-", "SMBP-".
   validateSingleCommit:
     description: 'When using "Squash and merge" on a PR with only one commit, GitHub will suggest using that commit message instead of the PR title for the merge commit, and it''s easy to commit this by mistake. Enable this option to also validate the commit message for one commit PRs.'
     required: false
