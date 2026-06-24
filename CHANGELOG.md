@@ -1,5 +1,37 @@
 # Changelog
 
+## [6.1.1](https://github.com/amannn/action-semantic-pull-request/compare/v6.1.0...v6.1.1) (2025-08-22)
+
+### Bug Fixes
+
+* Parse `headerPatternCorrespondence` properly ([#295](https://github.com/amannn/action-semantic-pull-request/issues/295)) ([800da4c](https://github.com/amannn/action-semantic-pull-request/commit/800da4c97f618e44f972ff9bc21ab5daecc97773))
+
+## [6.1.0](https://github.com/amannn/action-semantic-pull-request/compare/v6.0.1...v6.1.0) (2025-08-19)
+
+### Features
+
+* Support providing regexps for types ([#292](https://github.com/amannn/action-semantic-pull-request/issues/292)) ([a30288b](https://github.com/amannn/action-semantic-pull-request/commit/a30288bf13b78cca17c3abdc144db5977476fc8b))
+
+### Bug Fixes
+
+* Remove trailing whitespace from "unknown release type" error message ([#291](https://github.com/amannn/action-semantic-pull-request/issues/291)) ([afa4edb](https://github.com/amannn/action-semantic-pull-request/commit/afa4edb1c465fb22230da8ff4776a163ab5facdf))
+
+## [6.0.1](https://github.com/amannn/action-semantic-pull-request/compare/v6.0.0...v6.0.1) (2025-08-13)
+
+### Bug Fixes
+
+* Actually execute action ([#289](https://github.com/amannn/action-semantic-pull-request/issues/289)) ([58e4ab4](https://github.com/amannn/action-semantic-pull-request/commit/58e4ab40f59be79f2c432bf003e34a31174e977a))
+
+## [6.0.0](https://github.com/amannn/action-semantic-pull-request/compare/v5.5.3...v6.0.0) (2025-08-13)
+
+### ⚠ BREAKING CHANGES
+
+* Upgrade action to use Node.js 24 and ESM (#287)
+
+### Features
+
+* Upgrade action to use Node.js 24 and ESM ([#287](https://github.com/amannn/action-semantic-pull-request/issues/287)) ([bc0c9a7](https://github.com/amannn/action-semantic-pull-request/commit/bc0c9a79abfe07c0f08c498dd4a040bd22fe9b79))
+
 ## [5.5.3](https://github.com/amannn/action-semantic-pull-request/compare/v5.5.2...v5.5.3) (2024-06-28)
 
 

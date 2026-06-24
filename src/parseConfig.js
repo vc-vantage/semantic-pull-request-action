@@ -1,6 +1,6 @@
-const ConfigParser = require('./ConfigParser');
+import ConfigParser from './ConfigParser.js';
 
-module.exports = function parseConfig() {
+export default function parseConfig() {
   let types;
   if (process.env.INPUT_TYPES) {
     types = ConfigParser.parseEnum(process.env.INPUT_TYPES);
@@ -40,9 +40,11 @@ module.exports = function parseConfig() {
 
   let headerPatternCorrespondence;
   if (process.env.INPUT_HEADERPATTERNCORRESPONDENCE) {
-    headerPatternCorrespondence = ConfigParser.parseString(
-      process.env.INPUT_HEADERPATTERNCORRESPONDENCE
-    );
+    // todo: this should be migrated to an enum w/ ConfigParser.parseEnum
+    headerPatternCorrespondence =
+      process.env.INPUT_HEADERPATTERNCORRESPONDENCE.split(',')
+        .map((part) => part.trim())
+        .filter((part) => part.length > 0);
   }
 
   let wip;
@@ -89,4 +91,4 @@ module.exports = function parseConfig() {
     githubBaseUrl,
     ignoreLabels
   };
-};
+}

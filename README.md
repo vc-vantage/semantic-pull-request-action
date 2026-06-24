@@ -7,6 +7,7 @@ Used by: [Electron](https://github.com/electron/electron) · [Vite](https://gith
 ## Examples
 
 **Valid pull request titles:**
+
 - fix: Correct typo
 - feat: Add support for Node.js 18
 - refactor!: Drop support for Node.js 12
@@ -20,24 +21,26 @@ See [Conventional Commits](https://www.conventionalcommits.org/) for more exampl
 
 1. If your goal is to create squashed commits that will be used for automated releases, you'll want to configure your GitHub repository to [use the squash & merge strategy](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/configuring-commit-squashing-for-pull-requests) and tick the option "Default to PR title for squash merge commits".
 2. [Add the action](https://docs.github.com/en/actions/quickstart) with the following configuration:
+
 ```yml
-name: "Lint PR"
+name: 'Lint PR'
 
 on:
   pull_request_target:
     types:
       - opened
-      - edited
       - reopened
+      - edited
+      # - synchronize (if you use required Actions)
 
 jobs:
   main:
     name: Validate PR title
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     permissions:
       pull-requests: read
     steps:
-      - uses: amannn/action-semantic-pull-request@v5
+      - uses: amannn/action-semantic-pull-request@v6
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
@@ -61,10 +64,12 @@ feat(ui): Add `Button` component
 ```yml
         with:
           # Configure which types are allowed (newline-delimited).
+          # These are regex patterns auto-wrapped in `^ $`.
           # Default: https://github.com/commitizen/conventional-commit-types
           types: |
             fix
             feat
+            JIRA-\d+
           # Configure which scopes are allowed (newline-delimited).
           # These are regex patterns auto-wrapped in `^ $`.
           scopes: |
@@ -124,7 +129,7 @@ This will prevent the PR title from being validated, and pull request checks wil
 **Attention**: If you want to use the this feature, you need to grant the `pull-requests: write` permission to the GitHub Action. This is because the action will update the status of the PR to remain in a pending state while `[WIP]` is present in the PR title.
 
 ```yml
-name: "Lint PR"
+name: 'Lint PR'
 
 permissions:
   pull-requests: write
@@ -132,11 +137,11 @@ permissions:
 jobs:
   main:
     name: Validate PR title
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     permissions:
       pull-requests: read
     steps:
-      - uses: amannn/action-semantic-pull-request@v5
+      - uses: amannn/action-semantic-pull-request@v6
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -145,7 +150,7 @@ jobs:
 
 ### Legacy configuration for validating single commits
 
-When using "Squash and merge" on a PR with only one commit, GitHub will suggest using that commit message instead of the PR title for the merge commit. As it's easy to commit this by mistake this action supports two configuration options to provide additional validation for this case. 
+When using "Squash and merge" on a PR with only one commit, GitHub will suggest using that commit message instead of the PR title for the merge commit. As it's easy to commit this by mistake this action supports two configuration options to provide additional validation for this case.
 
 ```yml
           # If the PR only contains a single commit, the action will validate that
@@ -165,6 +170,10 @@ There are two events that can be used as triggers for this action, each with dif
 1. [`pull_request_target`](https://docs.github.com/en/actions/reference/events-that-trigger-workflows#pull_request_target): This allows the action to be used in a fork-based workflow, where e.g. you want to accept pull requests in a public repository. In this case, the configuration from the main branch of your repository will be used for the check. This means that you need to have this configuration in the main branch for the action to run at all (e.g. it won't run within a PR that adds the action initially). Also if you change the configuration in a PR, the changes will not be reflected for the current PR – only subsequent ones after the changes are in the main branch.
 2. [`pull_request`](https://docs.github.com/en/actions/reference/events-that-trigger-workflows#pull_request): This configuration uses the latest configuration that is available in the current branch. It will only work if the branch is based in the repository itself. If this configuration is used and a pull request from a fork is opened, you'll encounter an error as the GitHub token environment parameter is not available. This option is viable if all contributors have write access to the repository.
 
+> [!TIP]
+> If the workflow is required for merging, you need to ensure that the you add a trigger type for [`synchronize`](https://docs.github.com/en/webhooks/webhook-events-and-payloads?actionType=synchronize#pull_request).
+> This will ensure that the check is ran on each new push as required workflows need to run on the lastest change.
+
 ## Outputs
 
 - The outputs `type`, `scope` and `subject` are populated, except for if the `wip` option is used.
@@ -175,8 +184,8 @@ There are two events that can be used as triggers for this action, each with dif
 <details>
 <summary>Example</summary>
 
-```yml
-name: "Lint PR"
+````yml
+name: 'Lint PR'
 
 on:
   pull_request_target:
@@ -190,16 +199,14 @@ permissions:
 jobs:
   main:
     name: Validate PR title
-    runs-on: ubuntu-latest
-    permissions:
-      pull-requests: read
+    runs-on: ubuntu-slim
     steps:
-      - uses: amannn/action-semantic-pull-request@v5
+      - uses: amannn/action-semantic-pull-request@v6
         id: lint_pr_title
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: marocchino/sticky-pull-request-comment@v2
+      - uses: marocchino/sticky-pull-request-comment@0ea0beb66eb9baf113663a64ec522f60e49231c0
         # When the previous steps fails, the workflow would stop. By adding this
         # condition you can continue the execution with the populated error message.
         if: always() && (steps.lint_pr_title.outputs.error_message != null)
@@ -207,21 +214,21 @@ jobs:
           header: pr-title-lint-error
           message: |
             Hey there and thank you for opening this pull request! 👋🏼
-            
+
             We require pull request titles to follow the [Conventional Commits specification](https://www.conventionalcommits.org/en/v1.0.0/) and it looks like your proposed title needs to be adjusted.
 
             Details:
-            
+
             ```
             ${{ steps.lint_pr_title.outputs.error_message }}
             ```
 
       # Delete a previous comment when the issue has been resolved
       - if: ${{ steps.lint_pr_title.outputs.error_message == null }}
-        uses: marocchino/sticky-pull-request-comment@v2
-        with:   
+        uses: marocchino/sticky-pull-request-comment@0ea0beb66eb9baf113663a64ec522f60e49231c0
+        with:
           header: pr-title-lint-error
           delete: true
-```
+````
 
 </details>
