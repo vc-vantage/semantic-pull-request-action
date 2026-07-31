@@ -391,7 +391,7 @@ describe('description validation', () => {
 
   it('pass dependabot', async () => {
     await validatePrTitle('chore(deps): bump foobar', {
-      subjectPattern: '^(.*(VPM|VANSUP|AADA|AAA)-[1-9][0-9]{1,5}.*|bump .*)$',
+      subjectPattern: '^(.*(VPM|VANSUP|AADA|AAA|SMBP|AUTOQA)-[1-9][0-9]{0,5}.*|bump .*)$',
       subjectPatternError:
           'The subject found in the pull request title cannot start with an uppercase character.'
     });

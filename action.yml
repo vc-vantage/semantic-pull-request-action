@@ -23,13 +23,13 @@ inputs:
   subjectPattern:
     description: "Configure additional validation for the subject based on a regex. E.g. '^(?![A-Z]).+$' ensures the subject doesn't start with an uppercase character."
     required: false
-    default: "^(.*(VPM|VANSUP|AADA|AAA|SMBP)-[1-9][0-9]{1,5}.*|bump .*)$"
+    default: "^(.*(VPM|VANSUP|AADA|AAA|SMBP|AUTOQA)-[1-9][0-9]{0,5}.*|bump .*)$"
   subjectPatternError:
     description: "If `subjectPattern` is configured, you can use this property to override the default error message that is shown when the pattern doesn't match. The variables `subject` and `title` can be used within the message."
     required: false
     default: |
       Missing JIRA ticket in the pull request title "{title}". 
-      Ensure that contains  "VPM-", "VANSUP"-, "AADA-", "AAA-", "SMBP-".
+      Ensure that contains  "VPM-", "VANSUP"-, "AADA-", "AAA-", "SMBP-", "AUTOQA-".
   validateSingleCommit:
     description: 'When using "Squash and merge" on a PR with only one commit, GitHub will suggest using that commit message instead of the PR title for the merge commit, and it''s easy to commit this by mistake. Enable this option to also validate the commit message for one commit PRs.'
     required: false
