@@ -17,6 +17,15 @@ Used by: [Electron](https://github.com/electron/electron) · [Vite](https://gith
 
 See [Conventional Commits](https://www.conventionalcommits.org/) for more examples.
 
+## Generated configs releases
+
+In `vc-vantage/vantage-configs`, same-repository PRs targeting `main` from
+`release/uat-<name>/<version>` or `release/prod-<name>/<version>` are exempt from
+title and single-commit validation when their author is `github-actions[bot]` or
+`aa-ci-bot[bot]` with GitHub's `Bot` account type. These promotion PRs retain their
+existing `:tada:` messages when an app token creates or updates them. The normal
+success status is reported; `[WIP]` PRs remain pending when WIP handling is enabled.
+
 ## Installation
 
 1. If your goal is to create squashed commits that will be used for automated releases, you'll want to configure your GitHub repository to [use the squash & merge strategy](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/configuring-commit-squashing-for-pull-requests) and tick the option "Default to PR title for squash merge commits".

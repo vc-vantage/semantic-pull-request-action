@@ -3,6 +3,27 @@ import * as github from '@actions/github';
 import parseConfig from './parseConfig.js';
 import validatePrTitle from './validatePrTitle.js';
 
+/**
+ * @param {{
+ *   base: {ref: string, repo: {full_name: string}},
+ *   head: {ref: string, repo: {full_name: string} | null},
+ *   user: {login: string, type: string} | null
+ * }} pullRequest
+ * @returns {boolean}
+ */
+function isConfigsRelease(pullRequest) {
+  return (
+    pullRequest.base.repo.full_name === 'vc-vantage/vantage-configs' &&
+    pullRequest.head.repo?.full_name === 'vc-vantage/vantage-configs' &&
+    pullRequest.base.ref === 'main' &&
+    pullRequest.user?.type === 'Bot' &&
+    ['github-actions[bot]', 'aa-ci-bot[bot]'].includes(
+      pullRequest.user.login
+    ) &&
+    /^release\/(?:uat|prod)-[^/]+\/[^/]+$/.test(pullRequest.head.ref)
+  );
+}
+
 async function run() {
   try {
     const {
@@ -62,7 +83,11 @@ async function run() {
     const isWip = wip && /^\[WIP\]\s/.test(pullRequest.title);
 
     let validationError;
-    if (!isWip) {
+    if (isConfigsRelease(pullRequest)) {
+      core.info(
+        'Generated configs release: PR titles and commit messages keep their existing :tada: format and are exempt from semantic validation.'
+      );
+    } else if (!isWip) {
       try {
         await validatePrTitle(pullRequest.title, {
           types,
