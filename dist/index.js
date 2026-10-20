@@ -32771,7 +32771,7 @@ async function run() {
         repo,
         sha: pullRequest.head.sha,
         state: newStatus,
-        target_url: 'https://github.com/amannn/action-semantic-pull-request',
+        target_url: 'https://github.com/vc-vantage/semantic-pull-request-action',
         description: isWip
           ? 'This PR is marked with "[WIP]".'
           : validationError
