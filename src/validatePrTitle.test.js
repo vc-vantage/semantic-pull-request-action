@@ -405,6 +405,13 @@ describe('description validation', () => {
     });
   });
 
+  it('allows MRPS Jira projects', async () => {
+    await validatePrTitle('feat: allow MRPS Jira projects MRPS-1', {
+      subjectPattern:
+        '^(.*(VPM|PENG|MRPS|VANSUP|AADA|AAA|SMBP|AUTOQA|AD)-[1-9][0-9]{0,5}.*|bump .*)$'
+    });
+  });
+
   it('interpolates variables into `subjectPatternError`', async () => {
     await expect(
       validatePrTitle('fix: Foobar', {
