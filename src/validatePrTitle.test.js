@@ -412,6 +412,13 @@ describe('description validation', () => {
     });
   });
 
+  it('allows CNTMETASRV Jira projects', async () => {
+    await validatePrTitle('feat: allow CNTMETASRV Jira projects CNTMETASRV-1', {
+      subjectPattern:
+        '^(.*(VPM|PENG|MRPS|VANSUP|AADA|AAA|SMBP|AUTOQA|AD|CNTMETASRV)-[1-9][0-9]{0,5}.*|bump .*)$'
+    });
+  });
+
   it('interpolates variables into `subjectPatternError`', async () => {
     await expect(
       validatePrTitle('fix: Foobar', {
